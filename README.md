@@ -1,3 +1,11 @@
+
+## 📚 Additional Resources
+
+- [React Official Documentation](https://react.dev/reference/react)
+- [Recoil Documentation](https://recoiljs.org/)
+- [100xDevs Course Materials](https://projects.100xdevs.com/)
+
+
 # **Complete Web Development Guide 🚀**
 
 > Comprehensive full-stack web development concepts from backend to frontend, covering Express.js, MongoDB, React, and modern web technologies.
@@ -2741,8 +2749,3 @@ await Model.deleteOne({ field: value });
 **This comprehensive definitions section covers all web development concepts from backend to frontend!** 🚀📚
 
 
-## 📚 Additional Resources
-
-- [React Official Documentation](https://react.dev/reference/react)
-- [Recoil Documentation](https://recoiljs.org/)
-- [100xDevs Course Materials](https://projects.100xdevs.com/)
