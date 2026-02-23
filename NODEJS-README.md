@@ -168,6 +168,20 @@ app.get('/data', (req, res) => {
 ### **Topic: Middleware**
 **Definition:** Functions that have access to request, response, and next function in the request-response cycle.
 
+**Detailed Explanation:**
+Middleware functions execute in sequence between receiving a request and sending a response. They can:
+- Execute any code
+- Modify request and response objects
+- End the request-response cycle
+- Call the next middleware in the stack
+
+Middleware is essential for:
+- Authentication/Authorization
+- Logging requests
+- Parsing request bodies
+- Error handling
+- CORS handling
+
 **Example:**
 ```javascript
 // Custom middleware
@@ -180,12 +194,41 @@ app.use(logger);
 
 // Built-in middleware
 app.use(express.json()); // Parse JSON bodies
+
+// Route-specific middleware
+const authMiddleware = (req, res, next) => {
+    const token = req.headers.authorization;
+    if (!token) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    next();
+};
+
+app.get('/protected', authMiddleware, (req, res) => {
+    res.json({ message: 'Protected data' });
+});
 ```
 
 ---
 
 ### **Topic: CORS (Cross-Origin Resource Sharing)**
 **Definition:** Mechanism allowing restricted resources on a web page to be requested from another domain.
+
+**Detailed Explanation:**
+CORS is a security feature implemented by browsers to prevent malicious websites from accessing resources from different origins. Without CORS:
+- Frontend (localhost:3000) cannot access Backend (localhost:5000)
+- Browser blocks the request for security
+
+Why CORS is needed:
+- Modern apps have separate frontend and backend servers
+- APIs need to be accessible from different domains
+- Mobile apps need to access web APIs
+
+CORS Headers:
+- `Access-Control-Allow-Origin`: Which origins can access
+- `Access-Control-Allow-Methods`: Which HTTP methods allowed
+- `Access-Control-Allow-Headers`: Which headers allowed
+- `Access-Control-Allow-Credentials`: Allow cookies/auth
 
 **Example:**
 ```javascript
@@ -196,9 +239,22 @@ app.use(cors());
 
 // Custom CORS configuration
 app.use(cors({
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST'],
-    credentials: true
+    origin: 'http://localhost:3000', // Allow only this origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true, // Allow cookies
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Multiple origins
+const allowedOrigins = ['http://localhost:3000', 'https://myapp.com'];
+app.use(cors({
+    origin: function(origin, callback) {
+        if (allowedOrigins.includes(origin) || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
 }));
 ```
 
@@ -346,6 +402,37 @@ app.listen(3000);
 
 ### **Topic: JWT (JSON Web Token)**
 **Definition:** Compact, self-contained token for securely transmitting information between parties as a JSON object.
+
+**Detailed Explanation:**
+JWT Structure (3 parts separated by dots):
+1. **Header**: Algorithm and token type
+   ```json
+   {"alg": "HS256", "typ": "JWT"}
+   ```
+
+2. **Payload**: Claims (user data)
+   ```json
+   {"username": "john", "role": "admin", "exp": 1516239022}
+   ```
+
+3. **Signature**: Verify token integrity
+   ```
+   HMACSHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), secret)
+   ```
+
+Why JWT?
+- **Stateless**: No database lookup needed
+- **Self-contained**: All data in token
+- **Scalable**: Works across multiple servers
+- **Secure**: Signed and optionally encrypted
+
+JWT vs Session:
+| Feature | JWT | Session |
+|---------|-----|----------|
+| Storage | Client-side | Server-side |
+| Stateless | Yes | No |
+| Scalability | High | Limited |
+| Database Query | Not needed | Every request |
 
 **Example:**
 ```javascript

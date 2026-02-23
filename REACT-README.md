@@ -206,6 +206,27 @@ function Card({ children }) {
 ### **Topic: useState Hook**
 **Definition:** Hook that allows functional components to manage state.
 
+**Detailed Explanation:**
+State is data that changes over time and triggers re-renders when updated.
+
+Key Concepts:
+- **State Variable**: Holds current value
+- **Setter Function**: Updates state and triggers re-render
+- **Initial Value**: State value on first render
+- **Immutability**: Never modify state directly, always use setter
+
+When to use useState:
+- Form inputs
+- Toggle visibility
+- Counter values
+- Any data that changes and affects UI
+
+State Update Rules:
+- State updates are asynchronous
+- Multiple updates may be batched
+- Use functional updates for dependent state
+- Don't mutate objects/arrays directly
+
 **Example:**
 ```javascript
 import { useState } from 'react';
@@ -261,6 +282,37 @@ function UserForm() {
 
 ### **Topic: useEffect**
 **Definition:** Hook for performing side effects in functional components (API calls, subscriptions, timers).
+
+**Detailed Explanation:**
+Side effects are operations that affect things outside the component:
+- Fetching data from API
+- Setting up subscriptions
+- Manually changing DOM
+- Setting timers
+- Logging
+
+When useEffect runs:
+1. **After every render** (no dependency array)
+2. **Once on mount** (empty dependency array [])
+3. **When dependencies change** ([dep1, dep2])
+
+Component Lifecycle with useEffect:
+```
+Mount → useEffect runs
+Update → useEffect runs (if dependencies changed)
+Unmount → Cleanup function runs
+```
+
+Common Patterns:
+- Data fetching on mount
+- Subscribing to events
+- Setting up timers
+- Syncing with external systems
+
+Cleanup Function:
+- Runs before component unmounts
+- Runs before effect re-runs
+- Used to prevent memory leaks
 
 **Example:**
 ```javascript
@@ -419,6 +471,35 @@ function UserProfile() {
 ### **Topic: Context API**
 **Definition:** React feature for sharing data across component tree without prop drilling.
 
+**Detailed Explanation:**
+Context API solves the "prop drilling" problem where you pass props through many levels of components.
+
+When to use Context:
+- Theme (dark/light mode)
+- User authentication state
+- Language/locale settings
+- Shopping cart data
+- Any global state needed by many components
+
+Context Components:
+1. **createContext()**: Creates context object
+2. **Provider**: Supplies value to descendants
+3. **Consumer/useContext**: Accesses context value
+
+Context vs Props:
+| Feature | Props | Context |
+|---------|-------|----------|
+| Passing | Explicit | Implicit |
+| Levels | Direct parent-child | Any depth |
+| Updates | Re-render path | Re-render consumers |
+| Use Case | Component communication | Global state |
+
+Best Practices:
+- Don't overuse (causes unnecessary re-renders)
+- Split contexts by concern
+- Use with useMemo for optimization
+- Consider state management libraries for complex apps
+
 **Example:**
 ```javascript
 import { createContext, useContext, useState } from 'react';
@@ -538,6 +619,31 @@ function Display() {
 
 ### **Topic: Custom Hook**
 **Definition:** Reusable function extracting component logic, must start with "use".
+
+**Detailed Explanation:**
+Custom Hooks allow you to:
+- Extract reusable logic from components
+- Share stateful logic between components
+- Organize complex component logic
+- Follow DRY (Don't Repeat Yourself) principle
+
+Rules of Custom Hooks:
+1. Name must start with "use" (e.g., useCounter, useFetch)
+2. Can call other hooks inside
+3. Must be called at top level (not in loops/conditions)
+4. Can return anything (values, functions, objects)
+
+When to create Custom Hook:
+- Logic used in multiple components
+- Complex logic that clutters component
+- Stateful logic that needs testing
+- Third-party library integration
+
+Benefits:
+- **Reusability**: Use same logic in multiple components
+- **Separation of Concerns**: Keep components clean
+- **Testability**: Test logic independently
+- **Maintainability**: Update logic in one place
 
 **Example:**
 ```javascript

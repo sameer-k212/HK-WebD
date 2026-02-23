@@ -60,6 +60,22 @@ mongoose.connect('mongodb://localhost:27017/myapp');
 ### **Topic: Mongoose**
 **Definition:** ODM (Object Data Modeling) library for MongoDB and Node.js providing schema-based solution.
 
+**Detailed Explanation:**
+Mongoose provides:
+- **Schema Definition**: Structure for documents
+- **Validation**: Built-in and custom validators
+- **Type Casting**: Automatic type conversion
+- **Middleware**: Pre/post hooks for operations
+- **Query Building**: Chainable query methods
+- **Population**: Reference other documents
+
+Why Mongoose?
+- Enforces structure on MongoDB (which is schema-less)
+- Provides validation before saving
+- Simplifies complex queries
+- Adds relationships between collections
+- Better error handling
+
 **Example:**
 ```javascript
 const mongoose = require('mongoose');
@@ -299,6 +315,31 @@ app.get('/me', async (req, res) => {
 
 ### **Topic: Hashing**
 **Definition:** Converting passwords into irreversible ciphertext for secure storage.
+
+**Detailed Explanation:**
+Hashing is a one-way function that:
+- Converts plain text to fixed-length string
+- Cannot be reversed (decrypted)
+- Same input always produces same output
+- Small change in input = completely different output
+
+Why Hash Passwords?
+- **Security**: Even if database is compromised, passwords are safe
+- **Privacy**: Admins cannot see user passwords
+- **Compliance**: Required by security standards
+
+Hashing vs Encryption:
+| Feature | Hashing | Encryption |
+|---------|---------|------------|
+| Reversible | No | Yes |
+| Key Required | No | Yes |
+| Use Case | Passwords | Sensitive data |
+| Output Length | Fixed | Variable |
+
+Common Algorithms:
+- **bcrypt**: Best for passwords (slow by design)
+- **SHA-256**: Fast, not recommended for passwords
+- **Argon2**: Modern, very secure
 
 **Example:**
 ```javascript
